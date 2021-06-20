@@ -33,15 +33,15 @@ If you had 8 bytes you will go from 0 to 8, then 9 to F, etc.
 Note: the question says that the loop is executed 5 times, so we will be iterating through each of these addresses five times to check for hits and misses.
 
 Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
-AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
-AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
-AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H x 4
+AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H x 4
+AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H x 4
 
 Similarly, for starting address BC080CH -
 1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
 
-BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
-BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
+BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H x 4
+BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H x 4
 
 [0*]: In the first loop first cache look up, it will always be a miss since cache is empty, rest all in the same line will be hits.
 [1*]: you count the number of addresses that you have already traversed and just meet the requirement in the last cache line
@@ -59,18 +59,21 @@ Hence hit ratio is 179 / 200.
 
 Associative mapping -
 
-Associative mapping L/W = 20/4
+Associative mapping T/W = 20/4
 
-Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
-AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
-AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
-AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+Memory location                 Cache line                          H/M (Loop 1)   (Loop 2 to Loop 5)
+AC080EH to AC080FH              0 (2 addresses)                     1M/1H               2H x 4
+AC0810H to AC081FH              1 (16 addresses)                    1M/15H              16H x 4
+AC0820H to AC0821H              2 (2 addresses)                     1M/1H               2H x 4
 
 Similarly, for starting address BC080CH -
 1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
 
-BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
-BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
+BC080CH to BC080FH              3 (4 addresses)                     1M/3H               4H x 4
+BC0810H to BC081FH              4 (16 addresses)                    1M/15H              4H x 4
+
+Here, we have 5 misses.
+Hence hit ratio is 195 / 200.
 
 
 4-way Set Associative mapping (K-way just tells you that there are K number of lines in each set) -
@@ -78,15 +81,21 @@ BC0810H to BC081FH              129 (16 addresses)                  1M/15H      
 To find the number of sets = number of cache lines / set size
 here i.e 2 ^ 13 / 4 = 2 ^ (13 - 2) = 2 ^ 11
 
-Set associative mapping S/L/W = 9/11/4
+Set associative mapping T/S/W = 9/11/4
 
-Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
-AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
-AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
-AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+You can use the 11 bits (discluding 4 from right) to determine the set number.
+In this case, it is the same 128 (as in with line number in direct mapping).
+
+Memory location                 Set / Cache line                    H/M (Loop 1)   (Loop 2 to Loop 5)
+AC080EH to AC080FH              128 / 0                             1M/1H               2H x 4
+AC0810H to AC081FH              129 / 0                             1M/15H              16H x 4
+AC0820H to AC0821H              130 / 0                             1M/1H               2H x 4 
 
 Similarly, for starting address BC080CH -
 1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
 
-BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
-BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
+BC080CH to BC080FH              128 / 1                             1M/3H               4H x 4
+BC0810H to BC081FH              129 / 1                             1M/15H              4H x 4
+
+Again, 5 misses
+SO, hit ratio = 195 / 200.
