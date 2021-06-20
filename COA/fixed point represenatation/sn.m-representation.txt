@@ -1,0 +1,13 @@
+Sn.m
+First bit is 'S'igned bit
+Next n bits are integer
+Next m bits are fraction
+
+You can always find the regular sum of the bits after decimal and divide the sum by 2^m to get the decimal representation, its easier that way.
+For example, 0.1001 would be 9 (1001) divided by 16 (since m = 4).
+
+If you are to perform any arithmetic between two numbers in some fixed point representations, make sure they both have the same representation.
+
+Range will be defined as -
+upper limit: (2 ^ n) - 1 decimal part, and 1 - (2 ^ m) fraction part.
+So a total for sx.y = -(2 ^ x - 2 ^ -y) to (2 ^ x - 2 ^ -y) would be your range.

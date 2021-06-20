@@ -1,0 +1,3 @@
+1. match the exponents (aka the decimal points have to be aligned)
+2. add / subtract significands
+3. normalize result again

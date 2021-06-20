@@ -1,0 +1,9 @@
+1. The exponent part would be whatever your power is +127 (since its 8 bit biased representation)
+    but also note that +128 is 1000 0000 (and this itself is not +127)
+2. And the significand part will be the stuff to the right of the decimal point padded-to-the-right with 0s.
+    the reason we omit the '1' to the left of the decimal is because it will always be so; '1' being the only non-zero number in binary.
+    the reason that it is right padded, I THINK,
+        is because its the representation of fraction and obviously it will be followed by zeroes when it is post-decimal and not lead by.
+
+Also point of note: if the after-decimal number starts repeating itself, it is just best to include all 23 of those instead of padding-right with 0.
+Shown in example 2 png.

@@ -1,0 +1,17 @@
+To easily get 2's comp - start from LSB and go left, find the first 1 that appears, flip everything to the left of it but not itself and anything to its right.
+
+* WHEN performing booth's signed, always match up the bits (take one extra bit for the sign bit) and remember to apply 2's complement to that extra bit as well.
+and when you get the answer, if the sign bit is '1' meaning it is negative and the answer you have got is actually frankenstein'd (2's complemented),
+    you will need to find its 2's complement again to find the magnitude of the expected number.
+    it just always wise to check your answer with the decimal multiplication result.
+
+unsigned booth div -
+it is also wise to write down -M since you'll be doing A-M sometimes so you can just simply do A + -M
+and Pooja has given a neat simplification of the flowchart
+AQM | A is init 0, Q is dividend, M is divisor
+
+unsigned booth mult -
+CAQM | C is one extra bit that is always 0 (fuck knows why its there), A is your accumulator thing, Q is the multiplicand and M is multiplier
+
+signed booth mult (take care to complement the extra (sign) bit here as well) -
+AQQ'M | A is accumulator, Q is multiplicand, Q' is one extra bit that you take, M is multiplier

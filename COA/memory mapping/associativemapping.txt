@@ -1,0 +1,9 @@
+we remove the Line field entirely, we just have tag field and the word field.
+wherever a free cache line is found, the address block is assigned to that.
+
+advantage: improves hit ratio
+disadvantage: you have to compare with all existing fields to get a hit, because now we don't have % anymore.
+
+replacement policies:
+    can replace least recently used line
+    can replace 0-127 in order and loop back

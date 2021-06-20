@@ -1,0 +1,4 @@
+dude didn't say much except how it is the same thing as regular 32 bit, just look at the png for exceptions
+
+32 bit aka single-precision range
+64 bit aka double-precision range

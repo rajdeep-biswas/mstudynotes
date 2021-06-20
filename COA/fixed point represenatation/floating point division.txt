@@ -1,0 +1,3 @@
+same as floating point multiplication.txt
+just subtract the exponents instead of adding them
+and divide the significands

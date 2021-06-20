@@ -1,0 +1,8 @@
+a grouping of 1 set is made of x cache lines
+now we do block number modulo % cache set
+tag / set / word fields
+
+number of sets = number of cache lines / number of lines in a set
+example, if you have 4 cache lines in a set and a total of 128 cache lines, you'll have 5 sets i.e 5 hex digits
+
+example in png

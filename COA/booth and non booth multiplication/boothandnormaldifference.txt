@@ -1,0 +1,8 @@
+When shifting to the right, for unsigned, you always get a fresh new '0' at the MSB. (non booth) (this is regular right shift)
+When shifting to the right, for signed, you copy the bit at MSB to the next and leave the MSB to itself (booth); this is probably to retain the sign. (this arithmetic right shift)
+
+M is multiplier.
+Q is multiplicand. (although it doesn't matter which one is which)
+
+When counting number of additions and subtractions. It's always +1 to an addition and a subtraction, each, if you've entered and left a block of 1s. (simply: MSB is not 1)
+And if MSB is 1, you've never left the leftmost block of 1s, hence that will +1 only to the subtraction count.

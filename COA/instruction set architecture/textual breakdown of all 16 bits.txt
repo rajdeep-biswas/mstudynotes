@@ -1,0 +1,49 @@
+OPCODE  |  Direction    |  Word                        |  MODe  |  REG  |  R/M
+------- + ------------------------- + ---------------------------- + ------ + ----- + ------
+6-bit   | 1-bit                     | 1-bit                        |  2-bit | 3-bit | 3-bit
+100010  | 1 if destination is REG   | 1 if word (16-bit) transfer  |     these three are
+(MOV)   | 0 if destination is mem   | 0 if byte (8-bit) transfer   |     explained below
+
+
+The first byte -
+    First 6 bits is the OPCODE
+        MOV is 100010, for example
+        MOV is 1000101, in case of immediate addessing, the D bit is not needed anymore. [wtf right?]
+    Next 1 bit is D(irection) but it helps to think in terms of a DESTINATION bit: it's only dependent on what the destination is -
+        1 if the destination (LHS of comma) is register
+        0 if the destination (LHS of comma) is memory location
+    Next 1 bit is W(ord)
+        1 if a Word (16 bits) is being moved
+        0 if a Byte (8 bits) is being moved
+
+The second byte -
+    First 2 bits are MODe
+        If movement is REGister to REGister, then MOD is 11
+            ** also, if you need help figuring out which register symbol is valid, just look at the same table
+        And about the displacement with 8 or 16 bytes or no displacement at all
+            If you see just a [REG] by itself, then there is no displacement i.e MODe is 00,
+            If there is a [REG + <8 bits data>], then there is 8 bit displacement i.e MODe is 01, and
+            If there is a [REG + <16 bits data>], then there is 16 bit displacement i.e MODe is 10. This can be reversed looked up from the table as well.
+    Next pair of 3 bits each are REG and R/M, in order
+        Refer to the table to know what to place where
+        If both things involved are REGisters (i.e MOD is 11)
+            then REG = destination, R/M = source
+        If memory is involved in either part (Look at more examples png for this part)
+            REG always first 3 bits and memory next 3 bits
+        Basically, the first one will always be a REGister (so you refer to the left-most section of the table)
+            and the second one sometimes is REGister and sometimes memory.
+            (both are never memory)
+
+Last bytes -
+    ONLY in case there is any displacement, you just append the displacement magnitude itself rearragned in little endian format.
+    And note that it should be pairs of hex digits; XYh is a byte, XYZWh is a word. So, XYh stays XYh. But, XYZWh becomes ZWXYh when writing in machine code.
+    Example -
+    MOV AX, [SI, 68h] would end with 68h, itself but
+    MOV AX, [SI, ABCDh] would end with CDABh.
+
+    ONE IMPORTANT MISLEADING POINT: do not use the displacement amount to determine the Word bit - it is always dependent on the REGister in the 'equation'.
+    You can reverse look up registers from the table as well, to determine which belong to W = 0 or 1.
+
+Which makes it: if there is no displacement, it will be a 2 byte instruction, or
+                if there is <= 8 bit displacement, it will be a 3 byte instruction, or
+                if there is > 8, <= 16 bit displacement, it will be a 4 byte instruction.

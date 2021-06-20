@@ -1,0 +1,17 @@
+8K = 2 ^ 13
+16K = 2 ^ 14
+32K = 2 ^ 15
+64K = 2 ^ 16
+128K = 2 ^ 17
+256K = 2 ^ 18
+512K = 2 ^ 19
+1M = 2 ^ 20
+2M = 2 ^ 21
+4M = 2 ^ 22
+8M = 2 ^ 23
+16M = 2 ^ 24
+
+direct has worst hit ratio, least number of comparisons
+associate has best hit ratio, highest number of comparisons
+
+set associative is intermediate for both

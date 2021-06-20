@@ -1,0 +1,57 @@
+It is known that line number is determined by (block number modulo % total number of cache lines)
+Details -
+each block of memory is corresponds to only one cache line.
+jth block of the main memory maps to ith cache line,
+where i = j % M | M = total number of cache lines
+
+Block size == width of each cache line (note: and not total number of cache lines).
+So if a cache line is 8 bytes wide i.e your block size is 8 bytes i.e 2 ^ 3
+    then, your Word field size is 3 *bits*.
+    
+Line field size is similarly computed by number of cache lines (note: and not width of a single cache line)
+
+This should have been earlier but determine total field width by N where 2 ^ N is the total memory size.
+
+Tag field is found by doing N minus everything else (tag = total - (word + line))
+    i.e. total = main memory's N where 2 ^ N = main memory size
+    
+    for example if main memory is 4 MB and we know 1 MB = 2 ^ 20.
+    so, 4 MB must be 4 x 2 ^ 20 i.e 2 ^ 2 x 2 ^ 20 i.e 2 ^ 22
+    hence, N = 22 *bits*
+
+If you are trying to calculate starting addresses of blocks -
+You will need ceil(N / 4) hex digits to represent the addresses. And you'll need to know the block size aka cache line width.
+For a 16M memory,
+000 000 H is the first byte - and the starting address of the 1st block
+000 001 H is the next (2nd) byte
+...
+000 008 H is the 9th byte - i.e the starting address of the next (2nd) block
+...
+000 010 H is the 15th byte - i.e the starting address of the next (3rd) block
+
+hint: don't think of 'byte' and go looking for the next 64th bit (jumping 8 bits at a time)
+    just think of it as a single unique hex digit representing an entire byte - the hex itself doesn't have to be a 'unique byte' in itself.
+    so, 000 000 H represents the first byte in memory
+        000 001 H represents the next byte in memory and so on
+
+        each block is N memory locations away from each other where N = 8 *bits* if the cache width is 8 bytes.
+
+In order of MSB -> LSB, the fields go like -
+| TAG FIELD | LINE FIELD | WORD FIELD |
+
+So looking at any address, you can tell what the line number should be. 'line number' is literally just your LINE FIELD bits converted into hex or dec.
+
+Example -
+For a given address 8A0 0C9 H (with line width 8 bytes), you can note that the last 4 bits would be 1001.
+And since we have established that the word field is the last 3 bits with block width of 8 each, we know that the starting addresses of each block would always end with a '000'.
+And this is applicable in all cases - as many bits the word field might have, it will always be all 0s to represent the starting address of its block.
+
+So for the above given address, the start of its block is given by 8A0 0C8 H.
+
+And because of direct mapping, you also know that this block will always be mapped to the line number we found out in (text editor) line number 36 ^.
+
+Also, every cache line has a tag field of its own. So if this cache line's tag field exactly matches with the incoming address' tag field, it is called a cache hit.
+    (Then the byte of interest is just used.)
+
+advantage: you know which cache line number you have to go to just by looking at the address
+disadvantage: more chances of misses if you keep replacing the same cache line with different blocks that map to the same field again and again in a loop

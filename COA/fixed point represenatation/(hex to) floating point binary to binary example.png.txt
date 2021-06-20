@@ -1,0 +1,8 @@
+convert the hex to regular binary.
+identify the sign, biased exponent and significand parts.
+for biased exponent part, now, subtract 127 (instead of adding it).
+for significand part, just remember there is an implicit 1 in the decimal part (before the point),
+    and after the decimal is whatever you actually have at your significand part.
+move decimal point appropriately; to make 2^n into 2^0.
+convert to decimal if needed.
+given as in example png.

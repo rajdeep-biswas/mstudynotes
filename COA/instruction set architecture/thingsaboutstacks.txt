@@ -1,0 +1,9 @@
+ADD operation on stack: adds 4 locations and reduces two locations again.
+and the stack pointer typically decrements by 2 each time (on each PUSH or POP operation? idk)
+
+[11:27 pm] Kumar, Nitin
+    Exact toh yaad nahi, kuch aisa tha "Decrement store Decrement Store"
+​[11:28 pm] Kumar, Nitin
+    push 1 word, push 2nd word, pop both do the Operation (add or whatever) then push back the result
+​[11:28 pm] Kumar, Nitin
+    asia tha kuch shayad not 100% sure

@@ -1,0 +1,92 @@
+direct mapping -
+
+cache line size = block size = 16 bytes (given)
+hence, word field = 4 bits
+cache lines = 8k = 2 ^ 13 (given)
+hence, line field = 13 bits
+
+total memory size = 2 ^ 24
+
+direct mapping T/L/W = 7/13/4
+
+total memory locations being accessed = 200, since there 20 + 20 instructions and the loop is being done 5 times i.e 40 x 5
+(actually, read this as 'total number of instructions being executed', it is probably just that each instruction accesses one memory location)
+
+| Now we're gonna figure out which cache lines we're gonna go to -
+
+The two starting addresses are given, we will loop through each of them five times
+
+| let's figure where to start first
+
+For starting address AC080EH -
+(tag)          (line)        (word)
+1010 110 | 0 0000 1000 0000 | 1110
+So, starting cache line would be 128 (since 1000 0000 (or 80H) is 128 in decimal)
+
+* And you will have to look at your CACHE LINE SIZE to determine how many bytes to fit in in each cache line
+Here you have 16 bytes so you can go from XXX0H to XXXFH
+* Note that no matter your starting address, you should always close at the terminal address because of modulus.
+i.e AC080EH will end at AC080FH and not something like AC080EH + 16 bytes
+
+If you had 8 bytes you will go from 0 to 8, then 9 to F, etc.
+
+Note: the question says that the loop is executed 5 times, so we will be iterating through each of these addresses five times to check for hits and misses.
+
+Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
+AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
+AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
+AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+
+Similarly, for starting address BC080CH -
+1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
+
+BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
+BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
+
+[0*]: In the first loop first cache look up, it will always be a miss since cache is empty, rest all in the same line will be hits.
+[1*]: you count the number of addresses that you have already traversed and just meet the requirement in the last cache line
+[2*]: since the first time is always a miss
+[4*]: since cache lines 128 and 129 were replaced by the 2nd set of addresses, the first two rows in loop2-5 are misses but since line 130 was untoched, that one is still a hit.
+
+So now we have iterated loop 1 one time and loops 2 to 5 one time each (this is bit of a _duh_)
+Hence, total is still 200 instructions and total number of hits (or misses) are 1 x loop 1 + 4 x loop 2to5
+
+It's easier to count misses so just count that so 5 + 4 x 4 = 21 misses.
+Hence 200 - 21 = 179 hits.
+
+Hence hit ratio is 179 / 200.
+
+
+Associative mapping -
+
+Associative mapping L/W = 20/4
+
+Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
+AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
+AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
+AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+
+Similarly, for starting address BC080CH -
+1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
+
+BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
+BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
+
+
+4-way Set Associative mapping (K-way just tells you that there are K number of lines in each set) -
+
+To find the number of sets = number of cache lines / set size
+here i.e 2 ^ 13 / 4 = 2 ^ (13 - 2) = 2 ^ 11
+
+Set associative mapping S/L/W = 9/11/4
+
+Memory location                 Cache line                          H/M (Loop 1 [*0])   (Loop 2 to Loop 5)
+AC080EH to AC080FH              128 (2 addresses)              [*2] 1M/1H               1M/1H
+AC0810H to AC081FH              129 (16 addresses)                  1M/15H              1M/15H
+AC0820H to AC0821H              130 (2 [*1] addresses)              1M/1H          [*4] 2H
+
+Similarly, for starting address BC080CH -
+1011 110 | 0 0000 1000 0000 | 1100 (well same starting cache line)
+
+BC080CH to BC080FH              128 (4 addresses)                   1M/3H               1M/3H
+BC0810H to BC081FH              129 (16 addresses)                  1M/15H              1M/3H
