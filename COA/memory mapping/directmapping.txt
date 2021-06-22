@@ -4,6 +4,8 @@ each block of memory is corresponds to only one cache line.
 jth block of the main memory maps to ith cache line,
 where i = j % M | M = total number of cache lines
 
+T/L/W -
+
 Block size == width of each cache line (note: and not total number of cache lines).
 So if a cache line is 8 bytes wide i.e your block size is 8 bytes i.e 2 ^ 3
     then, your _Word field size is 3 *bits*.
@@ -12,7 +14,7 @@ _Line field size is similarly computed by number of cache lines (note: and not w
 
 This should have been earlier but determine total field width by N where 2 ^ N is the total memory size.
 
-Tag field is found by doing N minus everything else (tag = total - (word + line))
+_Tag field is found by doing N minus everything else (tag = total - (word + line))
     i.e. total = main memory's N where 2 ^ N = main memory size
     
     for example if main memory is 4 MB and we know 1 MB = 2 ^ 20.
