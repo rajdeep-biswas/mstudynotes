@@ -99,3 +99,9 @@ BC0810H to BC081FH              129 / 1                             1M/15H      
 
 Again, 5 misses
 SO, hit ratio = 195 / 200.
+
+Trivia -
+direct has worst hit ratio, least number of comparisons
+associate has best hit ratio, highest number of comparisons
+
+set associative is intermediate for both

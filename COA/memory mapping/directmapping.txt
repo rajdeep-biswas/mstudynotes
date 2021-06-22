@@ -6,9 +6,9 @@ where i = j % M | M = total number of cache lines
 
 Block size == width of each cache line (note: and not total number of cache lines).
 So if a cache line is 8 bytes wide i.e your block size is 8 bytes i.e 2 ^ 3
-    then, your Word field size is 3 *bits*.
+    then, your _Word field size is 3 *bits*.
     
-Line field size is similarly computed by number of cache lines (note: and not width of a single cache line)
+_Line field size is similarly computed by number of cache lines (note: and not width of a single cache line)
 
 This should have been earlier but determine total field width by N where 2 ^ N is the total memory size.
 
