@@ -1,0 +1,4 @@
+write through policy
+    everytime we do a write, we do it in the main memory as well as in the cache
+write back policy
+    intially, only write in the cache. there's an update bit if its set only then overwrite main memory
