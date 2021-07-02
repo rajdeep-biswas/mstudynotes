@@ -1,0 +1,1 @@
+speed up factor = non-pipelined / pipelined
